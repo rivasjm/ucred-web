@@ -53,50 +53,12 @@ jobs:
 
       - name: 🚀 Deploy a WebDAV
         env:
-          WEBDAV_URL: ${{ secrets.WEBDAV_URL }}/calculadora
+          WEBDAV_URL: ${{ secrets.WEBDAV_URL }}
           WEBDAV_USERNAME: ${{ secrets.WEBDAV_USERNAME }}
           WEBDAV_PASSWORD: ${{ secrets.WEBDAV_PASSWORD }}
         run: |
-          echo "📤 Subiendo archivos a WebDAV (subdirectorio calculadora)..."
-          
-          # Create calculadora directory if it doesn't exist
-          curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
-               -X MKCOL "$WEBDAV_URL" || true
-          
-          # Upload index.html
-          curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
-               -T index.html "$WEBDAV_URL/index.html"
-          echo "✅ index.html uploaded"
-          
-          # Create css directory
-          curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
-               -X MKCOL "$WEBDAV_URL/css" || true
-          
-          # Upload CSS files
-          for file in css/*.css; do
-            if [ -f "$file" ]; then
-              filename=$(basename "$file")
-              curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
-                   -T "$file" "$WEBDAV_URL/css/$filename"
-              echo "✅ $file uploaded"
-            fi
-          done
-          
-          # Create js directory
-          curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
-               -X MKCOL "$WEBDAV_URL/js" || true
-          
-          # Upload JS files
-          for file in js/*.js; do
-            if [ -f "$file" ]; then
-              filename=$(basename "$file")
-              curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
-                   -T "$file" "$WEBDAV_URL/js/$filename"
-              echo "✅ $file uploaded"
-            fi
-          done
-          
-          echo "🎉 Deployment completado en /calculadora!"
+          chmod +x deploy.sh
+          ./deploy.sh
 
       - name: 📊 Resumen de Deployment
         run: |
