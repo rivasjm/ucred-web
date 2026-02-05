@@ -22,11 +22,11 @@ La URL completa de tu directorio WebDAV donde se subirán los archivos.
 > **Nota:** Los espacios en la URL deben estar codificados como `%20`
 
 ### WEBDAV_USERNAME
-Tu nombre de usuario de la UC (sin @unican.es)
+Tu nombre de usuario completo de la UC (con @unican.es)
 
-**Valor:** `tu_usuario`
+**Valor:** `tu_usuario@unican.es`
 
-**Ejemplo:** Si tu email es `rivas@unican.es`, entonces el username es `rivas`
+**Ejemplo:** Si tu email es `rivas@unican.es`, entonces el username es `rivas@unican.es`
 
 ### WEBDAV_PASSWORD
 Tu contraseña de la UC
@@ -43,7 +43,7 @@ Abre un terminal y ejecuta:
 
 ```bash
 # Listar contenido del directorio
-curl -u "TU_USUARIO:TU_PASSWORD" -X PROPFIND \
+curl -u "TU_USUARIO@unican.es:TU_PASSWORD" -X PROPFIND \
   "https://disco.unican.es/hcwebdav/Home%20Unican/www"
 
 # Si ves una respuesta XML con el listado, ¡funciona! ✅
@@ -52,7 +52,7 @@ curl -u "TU_USUARIO:TU_PASSWORD" -X PROPFIND \
 ### Crear el directorio (si no existe)
 
 ```bash
-curl -u "TU_USUARIO:TU_PASSWORD" -X MKCOL \
+curl -u "TU_USUARIO@unican.es:TU_PASSWORD" -X MKCOL \
   "https://disco.unican.es/hcwebdav/Home%20Unican/www"
 ```
 
@@ -102,7 +102,7 @@ En el workflow verás:
 Lista los archivos en el servidor:
 
 ```bash
-curl -u "TU_USUARIO:TU_PASSWORD" -X PROPFIND \
+curl -u "TU_USUARIO@unican.es:TU_PASSWORD" -X PROPFIND \
   "https://disco.unican.es/hcwebdav/Home%20Unican/www" \
   | grep -o 'href>[^<]*</href'
 ```
@@ -124,7 +124,7 @@ Deberías ver:
 
 **Solución:**
 1. Verifica que los secrets `WEBDAV_USERNAME` y `WEBDAV_PASSWORD` sean correctos
-2. Usa tu usuario SIN el dominio `@unican.es`
+2. Usa tu usuario completo CON el dominio `@unican.es` (ej: `usuario@unican.es`)
 3. Verifica que puedas hacer login en https://disco.unican.es/hcwebdav/
 
 ### Error: "404 Not Found"
