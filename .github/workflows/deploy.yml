@@ -61,7 +61,12 @@ jobs:
           ./deploy.sh
 
       - name: 📊 Resumen de Deployment
+        env:
+          WEBDAV_USERNAME: ${{ secrets.WEBDAV_USERNAME }}
         run: |
+          # Extract username without @unican.es
+          USERNAME=$(echo "$WEBDAV_USERNAME" | cut -d'@' -f1)
+          
           echo "## 🎉 Deployment Exitoso" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Archivos desplegados en /calculadora:**" >> $GITHUB_STEP_SUMMARY
@@ -74,4 +79,4 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**URL de acceso:** https://personales.unican.es/{username}/calculadora/" >> $GITHUB_STEP_SUMMARY
+          echo "**URL de acceso:** https://personales.unican.es/$USERNAME/calculadora/" >> $GITHUB_STEP_SUMMARY
