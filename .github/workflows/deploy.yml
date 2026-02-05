@@ -102,7 +102,7 @@ jobs:
         run: |
           echo "## 🎉 Deployment Exitoso" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Archivos desplegados:**" >> $GITHUB_STEP_SUMMARY
+          echo "**Archivos desplegados en /calculadora:**" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ index.html" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ css/styles.css" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ js/calculator.js" >> $GITHUB_STEP_SUMMARY
@@ -112,4 +112,4 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**URL de acceso:** Configurada en secrets de WebDAV" >> $GITHUB_STEP_SUMMARY
+          echo "**URL de acceso:** https://usuario.unican.es/calculadora/" >> $GITHUB_STEP_SUMMARY
