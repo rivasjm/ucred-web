@@ -70,16 +70,13 @@ Una vez configurados los secrets:
 Tu calculadora estará disponible en:
 
 ```
-https://tu-usuario.unican.es/
+https://personales.unican.es/{tu-usuario}/calculadora/
 ```
 
-O posiblemente:
-
+**Ejemplo:** Si tu usuario es `rivas`, la URL sería:
 ```
-https://web.unican.es/~tu_usuario/
+https://personales.unican.es/rivas/calculadora/
 ```
-
-> **Nota:** Consulta con el servicio de informática de la UC la URL exacta.
 
 ## 📊 Verificar el Deployment
 
