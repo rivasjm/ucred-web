@@ -156,7 +156,7 @@ MIT License - ver [LICENSE](LICENSE) para más detalles
 
 ## 👥 Autor
 
-**José Miguel Rivas** - [rivasjm](https://github.com/rivasjm)
+**Juan María Rivas** - [rivasjm](https://github.com/rivasjm)
 
 ---
 
