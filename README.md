@@ -125,7 +125,12 @@ El workflow automático incluye:
 Una vez desplegado, la calculadora estará disponible en:
 
 ```
-https://tu-usuario.unican.es/
+https://personales.unican.es/{tu-usuario}/calculadora/
+```
+
+**Ejemplo:** Si tu usuario es `rivas`:
+```
+https://personales.unican.es/rivas/calculadora/
 ```
 
 ## 🤝 Contribuir
