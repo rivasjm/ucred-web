@@ -1,0 +1,115 @@
+name: Deploy to WebDAV
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+
+      - name: 📦 Instalar dependencias
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl
+
+      - name: 🧹 Validar HTML
+        run: |
+          # Simple HTML validation - check for basic structure
+          if grep -q "<!DOCTYPE html>" index.html && \
+             grep -q "<html" index.html && \
+             grep -q "</html>" index.html; then
+            echo "✅ HTML structure is valid"
+          else
+            echo "❌ HTML structure is invalid"
+            exit 1
+          fi
+
+      - name: 🎨 Validar CSS existe
+        run: |
+          if [ -f "css/styles.css" ]; then
+            echo "✅ CSS file found"
+          else
+            echo "❌ CSS file not found"
+            exit 1
+          fi
+
+      - name: 🔧 Validar JavaScript
+        run: |
+          # Check all JS files exist
+          for file in js/calculator.js js/history.js js/theme.js js/main.js; do
+            if [ -f "$file" ]; then
+              echo "✅ Found $file"
+            else
+              echo "❌ Missing $file"
+              exit 1
+            fi
+          done
+
+      - name: 🚀 Deploy a WebDAV
+        env:
+          WEBDAV_URL: ${{ secrets.WEBDAV_URL }}
+          WEBDAV_USERNAME: ${{ secrets.WEBDAV_USERNAME }}
+          WEBDAV_PASSWORD: ${{ secrets.WEBDAV_PASSWORD }}
+        run: |
+          echo "📤 Subiendo archivos a WebDAV..."
+          
+          # Create directory if it doesn't exist
+          curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
+               -X MKCOL "$WEBDAV_URL" || true
+          
+          # Upload index.html
+          curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
+               -T index.html "$WEBDAV_URL/index.html"
+          echo "✅ index.html uploaded"
+          
+          # Create css directory
+          curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
+               -X MKCOL "$WEBDAV_URL/css" || true
+          
+          # Upload CSS files
+          for file in css/*.css; do
+            if [ -f "$file" ]; then
+              filename=$(basename "$file")
+              curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
+                   -T "$file" "$WEBDAV_URL/css/$filename"
+              echo "✅ $file uploaded"
+            fi
+          done
+          
+          # Create js directory
+          curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
+               -X MKCOL "$WEBDAV_URL/js" || true
+          
+          # Upload JS files
+          for file in js/*.js; do
+            if [ -f "$file" ]; then
+              filename=$(basename "$file")
+              curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
+                   -T "$file" "$WEBDAV_URL/js/$filename"
+              echo "✅ $file uploaded"
+            fi
+          done
+          
+          echo "🎉 Deployment completado!"
+
+      - name: 📊 Resumen de Deployment
+        run: |
+          echo "## 🎉 Deployment Exitoso" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Archivos desplegados:**" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ index.html" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ css/styles.css" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ js/calculator.js" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ js/history.js" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ js/theme.js" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ js/main.js" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**URL de acceso:** Configurada en secrets de WebDAV" >> $GITHUB_STEP_SUMMARY
