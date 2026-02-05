@@ -53,13 +53,13 @@ jobs:
 
       - name: 🚀 Deploy a WebDAV
         env:
-          WEBDAV_URL: ${{ secrets.WEBDAV_URL }}
+          WEBDAV_URL: ${{ secrets.WEBDAV_URL }}/calculadora
           WEBDAV_USERNAME: ${{ secrets.WEBDAV_USERNAME }}
           WEBDAV_PASSWORD: ${{ secrets.WEBDAV_PASSWORD }}
         run: |
-          echo "📤 Subiendo archivos a WebDAV..."
+          echo "📤 Subiendo archivos a WebDAV (subdirectorio calculadora)..."
           
-          # Create directory if it doesn't exist
+          # Create calculadora directory if it doesn't exist
           curl -u "$WEBDAV_USERNAME:$WEBDAV_PASSWORD" \
                -X MKCOL "$WEBDAV_URL" || true
           
@@ -96,7 +96,7 @@ jobs:
             fi
           done
           
-          echo "🎉 Deployment completado!"
+          echo "🎉 Deployment completado en /calculadora!"
 
       - name: 📊 Resumen de Deployment
         run: |
